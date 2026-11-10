@@ -11,6 +11,8 @@ BDD Gherkin-style test automation for the [ParaBank](https://parabank.parasoft.c
 | TypeScript v5.6 | Type safety |
 | Page Object Model | Maintainable selector abstraction |
 | dotenv | Local environment variable loading |
+| ESLint 10 + typescript-eslint 8 | Code quality and static analysis |
+| Prettier 3 | Consistent code formatting |
 | GitHub Actions | CI/CD pipeline |
 | Docker | Containerised runs (Kubernetes-ready) |
 
@@ -70,6 +72,21 @@ npm test
 | `npm run test:ui` | Interactive Playwright UI mode |
 | `npm run test:report` | Open last HTML report |
 | `npx playwright test --project=chromium` | Single browser only |
+
+## Code Quality
+
+| Command | Description |
+|---|---|
+| `npm run typecheck` | TypeScript type-check (no emit) |
+| `npm run lint` | ESLint — reports code quality issues |
+| `npm run lint:fix` | ESLint — auto-fixes what it can |
+| `npm run format` | Prettier — formats all `src/**/*.ts` |
+| `npm run format:check` | Prettier — CI check, exits non-zero if anything needs formatting |
+
+Run all checks before pushing:
+```bash
+npm run typecheck && npm run lint && npm run format:check && npm test
+```
 
 ## Scenarios
 

@@ -14,9 +14,18 @@ Copy `.env.example` to `.env` and set `TEST_PASSWORD` before running tests local
 npm test                                        # bddgen + run all browsers headless
 npm run test:headed                             # visual run
 npm run bddgen                                  # regenerate .features-gen/ from feature files
-npx tsc --noEmit                                # type-check only
+npm run typecheck                               # tsc --noEmit (type-check only, no emit)
+npm run lint                                    # ESLint — code quality issues
+npm run lint:fix                                # ESLint — auto-fix
+npm run format                                  # Prettier — format src/**/*.ts
+npm run format:check                            # Prettier — CI check (non-zero exit if unformatted)
 npx playwright test --project=chromium          # single browser
 npx playwright test --project=chromium,webkit   # skip Firefox
+```
+
+Pre-push checklist (run in order):
+```bash
+npm run typecheck && npm run lint && npm run format:check && npm test
 ```
 
 > Always run `npm run bddgen` before `npx playwright test` when feature files or step definitions change. The `npm test` script does both.
@@ -68,6 +77,12 @@ features/           Gherkin .feature files
 | Wait after registration | URL stays at `register.htm`; wait for `successMessage.waitFor({ state: 'visible' })` |
 | `networkidle` | Never use it — unreliable in production. Use element/URL waits instead |
 | Empty string in step text | `validateWelcomeText("")` throws intentionally — empty regex matches everything |
+
+## Code quality tools
+
+- **ESLint** (`eslint.config.mjs`) — `typescript-eslint/recommended` + `eslint-config-prettier`. Runs on `src/` only; `.features-gen/` is ignored.
+- **Prettier** (`.prettierrc`) — single quotes, 100-char print width, ES5 trailing commas. Runs on `src/**/*.ts`; `.feature` files are excluded (no built-in Gherkin parser).
+- The two tools are intentionally separate: ESLint catches logic/type issues, Prettier handles formatting. Never use `eslint-plugin-prettier` — it conflates the two.
 
 ## TypeScript
 
