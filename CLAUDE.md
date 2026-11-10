@@ -69,10 +69,6 @@ features/           Gherkin .feature files
 | `networkidle` | Never use it — unreliable in production. Use element/URL waits instead |
 | Empty string in step text | `validateWelcomeText("")` throws intentionally — empty regex matches everything |
 
-## Known issues
-
-- **Firefox on Windows:** Playwright's `juggler-pipe` IPC can hang in certain security contexts (VS Code terminal, restricted environments). Fix: add `%LOCALAPPDATA%\ms-playwright` to Windows Defender exclusions. The test code itself is correct — Chromium and WebKit always pass.
-
 ## TypeScript
 
 - `strict: true` — no implicit any, no unchecked nulls
