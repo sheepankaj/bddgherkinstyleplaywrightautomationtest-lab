@@ -1,0 +1,10 @@
+node_modules
+.features-gen
+playwright-report
+test-results
+dist
+.git
+.github
+.vscode
+.tmp
+.env
