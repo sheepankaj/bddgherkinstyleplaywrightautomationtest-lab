@@ -1,0 +1,7 @@
+node_modules/
+.features-gen/
+dist/
+playwright-report/
+test-results/
+.tmp/
+package-lock.json

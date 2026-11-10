@@ -9,14 +9,14 @@ export abstract class BasePage {
   }
 
   async assertTextVisible(text: string, timeout = 10_000): Promise<void> {
-    await expect(
-      this.page.getByText(text, { exact: false }).first()
-    ).toBeVisible({ timeout });
+    await expect(this.page.getByText(text, { exact: false }).first()).toBeVisible({ timeout });
   }
 
   async assertPageTitleContains(keyword: string, timeout = 10_000): Promise<void> {
     if (!keyword.trim()) {
-      throw new Error('assertPageTitleContains: keyword must not be empty — empty regex matches everything');
+      throw new Error(
+        'assertPageTitleContains: keyword must not be empty — empty regex matches everything'
+      );
     }
     await expect(this.page).toHaveTitle(new RegExp(keyword, 'i'), { timeout });
   }

@@ -18,12 +18,9 @@ When(
   }
 );
 
-Then(
-  'I should be on the {string} page',
-  async ({ accountOverviewPage }, heading: string) => {
-    await accountOverviewPage.validatePageHeading(heading);
-  }
-);
+Then('I should be on the {string} page', async ({ accountOverviewPage }, heading: string) => {
+  await accountOverviewPage.validatePageHeading(heading);
+});
 
 When('I click logout', async ({ homePage }) => {
   await homePage.logout();

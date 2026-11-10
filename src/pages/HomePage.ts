@@ -20,7 +20,7 @@ export class HomePage extends BasePage {
 
   async validateWelcomeText(text: string): Promise<void> {
     // "Welcome to ParaBank" is baked into a banner JPEG — not a DOM text node.
-    const keywords = text.split(/\s+/).filter(w => w.length > 2);
+    const keywords = text.split(/\s+/).filter((w) => w.length > 2);
     if (keywords.length === 0) {
       throw new Error(`validateWelcomeText: step text must not be empty, got: "${text}"`);
     }

@@ -21,7 +21,9 @@ export class RegisterPage extends BasePage {
   private readonly passwordInput = this.page.locator('input[name="customer.password"]');
   private readonly confirmPasswordInput = this.page.locator('input[name="repeatedPassword"]');
   private readonly registerButton = this.page.getByRole('button', { name: 'Register' });
-  private readonly successMessage = this.page.getByText('Your account was created successfully', { exact: false });
+  private readonly successMessage = this.page.getByText('Your account was created successfully', {
+    exact: false,
+  });
 
   constructor(page: Page) {
     super(page);
