@@ -14,6 +14,7 @@ on:
 
 env:
   BASE_URL: ${{ github.event.inputs.environment || 'https://parabank.parasoft.com' }}
+  TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
 jobs:
   test:
@@ -47,8 +48,6 @@ jobs:
         run: npx playwright test
         env:
           CI: true
-          BASE_URL: ${{ env.BASE_URL }}
-          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
