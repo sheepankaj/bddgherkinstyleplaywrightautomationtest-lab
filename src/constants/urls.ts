@@ -9,3 +9,7 @@ export const URL_PATTERNS = {
   home: /index\.htm/,
   overview: /overview\.htm/,
 } as const;
+
+export const API_URLS = {
+  users: 'https://jsonplaceholder.typicode.com/users',
+} as const;

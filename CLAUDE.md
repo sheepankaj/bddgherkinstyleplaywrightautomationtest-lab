@@ -33,12 +33,14 @@ npm run typecheck && npm run lint && npm run format:check && npm test
 ## Project layout
 
 ```
-src/constants/      urls.ts (URLS paths + URL_PATTERNS regexes), testData.ts (env-backed data)
+src/constants/      urls.ts (URLS + URL_PATTERNS + API_URLS), testData.ts (env-backed data)
+src/api/            API service classes (UsersApi.ts) — use Playwright APIRequestContext
 src/pages/          POM classes — extend BasePage; barrel-exported from index.ts
-src/fixtures/       Custom playwright-bdd test extension with POM fixtures
+src/fixtures/       Custom playwright-bdd test extension with POM + API fixtures
 src/steps/          Step definitions; import fixtures from '../fixtures/fixtures'
 src/utils/          credentialStore — JSON file bridge for cross-scenario credentials (.tmp/)
-features/           Gherkin .feature files
+features/api/       API Gherkin feature files
+features/auth/      UI Gherkin feature files
 .features-gen/      Auto-generated — never edit, in .gitignore
 .env                Local secrets — git-ignored; copy from .env.example
 .env.example        Committed template showing required env var names (no values)
@@ -52,6 +54,15 @@ features/           Gherkin .feature files
 - **Sensitive test data** (`TEST_PASSWORD`) lives in `.env` locally and in a GitHub/K8s secret in CI/production. `testData.ts` exports `getTestPassword()` — a function that reads the env var and throws only when called (at registration time), never at module import time. This keeps `bddgen` and Docker builds working without the secret.
 - **Cross-scenario state** (e.g. registered credentials) goes through `credentialStore` (file-based JSON at `.tmp/registered-user.json`). Do not use module-level variables for this — they don't survive across worker processes.
 - `.tmp` is git-ignored and excluded from Docker images. The CI workflow explicitly deletes it before each test run to prevent stale credentials on self-hosted runners.
+
+## API test pattern
+
+- API service classes live in `src/api/` and take `APIRequestContext` in their constructor
+- `API_URLS` in `src/constants/urls.ts` holds base URLs for external APIs
+- `usersApi` and `apiState` fixtures in `fixtures.ts` wire the service into BDD steps
+- `apiState` is a mutable fixture `{ status, body }` shared between steps in a scenario — same pattern as `testData`
+- API features go in `features/api/`; they run in the `api` project (no browser) via `testMatch: /.+\/api\/.+/`
+- UI features in `features/auth/` run in chromium/firefox/webkit via `testIgnore: /.+\/api\/.+/`
 
 ## Adding a new page
 

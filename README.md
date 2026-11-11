@@ -90,7 +90,10 @@ npm run typecheck && npm run lint && npm run format:check && npm test
 
 ## Scenarios
 
-### Scenario 1 — Register a new user and verify account creation
+### API — Validate user details for ID 2 (`features/api/users.feature`)
+Calls `GET https://jsonplaceholder.typicode.com/users/2`, validates HTTP 200, and asserts `name`, `username`, and `email` fields. Runs once in the dedicated `api` project (no browser launched).
+
+### UI Scenario 1 — Register a new user and verify account creation
 1. Navigate to the ParaBank home page
 2. Validate "Welcome to ParaBank" (via page title keywords)
 3. Register with a generated unique username (`usr{timestamp}{random}`)
@@ -141,8 +144,11 @@ The workflow (`.github/workflows/playwright-tests.yml`) runs on:
 **Setup required:** Add `TEST_PASSWORD` as a repository secret in GitHub → Settings → Secrets and variables → Actions.
 
 **Jobs:**
-1. **test** — installs deps, installs Chromium, runs `bddgen`, cleans stale `.tmp` credentials, runs `playwright test`, uploads HTML report and raw results as artifacts
-2. **docker-build** — builds and verifies the Docker image on merge to `main`
+1. **test (×3 shards)** — 3 parallel runners each handle a shard of the full test suite; upload blob reports
+2. **merge-reports** — downloads all blob reports and merges them into a single HTML report artifact
+3. **docker-build** — builds and verifies the Docker image on merge to `main`
+
+Sharding splits the test matrix across 3 runners so the full suite (UI × 3 browsers + API) finishes faster. Each shard uses `--shard=N/3`.
 
 ## VS Code Integration
 
