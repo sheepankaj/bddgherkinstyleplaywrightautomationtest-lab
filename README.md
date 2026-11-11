@@ -130,6 +130,8 @@ BASE_URL=https://staging.example.com TEST_PASSWORD=secret docker compose up
 
 The Docker image is built on the official `mcr.microsoft.com/playwright` base and is Kubernetes-ready — override variables via a ConfigMap or Secret at runtime. `.env` and `.tmp` are excluded from the image via `.dockerignore`.
 
+> `TEST_PASSWORD` is intentionally **not** required at `docker build` time. `bddgen` runs when the container starts (`npm test` = `bddgen && playwright test`), so the secret is only needed at runtime.
+
 ## CI/CD (GitHub Actions)
 
 The workflow (`.github/workflows/playwright-tests.yml`) runs on:

@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { URLS } from '../constants/urls';
-import { DEFAULT_REGISTRATION_DATA } from '../constants/testData';
+import { DEFAULT_REGISTRATION_DATA, getTestPassword } from '../constants/testData';
 
 export type UserCredentials = {
   username: string;
@@ -42,7 +42,8 @@ export class RegisterPage extends BasePage {
 
   async registerNewUser(): Promise<UserCredentials> {
     const username = this.generateUniqueUsername();
-    const { password, firstName, lastName, street, city, state, zipCode, phone, ssn } =
+    const password = getTestPassword(); // throws here at runtime, not at import time
+    const { firstName, lastName, street, city, state, zipCode, phone, ssn } =
       DEFAULT_REGISTRATION_DATA;
 
     await this.firstNameInput.fill(firstName);

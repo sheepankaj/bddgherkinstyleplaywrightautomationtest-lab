@@ -13,8 +13,9 @@ RUN npm ci
 # Copy source
 COPY . .
 
-# Pre-generate BDD test files so the image is self-contained
-RUN npm run bddgen
+# bddgen runs at container startup via CMD ["npm", "test"] = "bddgen && playwright test"
+# Do NOT run bddgen here — it loads testData.ts which needs TEST_PASSWORD,
+# a runtime secret that must not be baked into the image layer.
 
 # Override at runtime via K8s ConfigMap/Secret or docker run -e
 ENV CI=true

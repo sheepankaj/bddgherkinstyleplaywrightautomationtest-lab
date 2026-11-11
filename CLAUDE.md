@@ -49,7 +49,7 @@ features/           Gherkin .feature files
 - **Page classes** extend `BasePage` and own their locators as `private readonly` fields.
 - **Steps** receive page objects via fixtures — never instantiate pages directly in steps.
 - **URL constants** (`src/constants/urls.ts`): `URLS` for `page.goto()` paths; `URL_PATTERNS` for `page.waitForURL()` regexes. Both in one file so they stay in sync.
-- **Sensitive test data** (`TEST_PASSWORD`) lives in `.env`, read via `process.env` in `testData.ts`. Never hardcode passwords in source files.
+- **Sensitive test data** (`TEST_PASSWORD`) lives in `.env` locally and in a GitHub/K8s secret in CI/production. `testData.ts` exports `getTestPassword()` — a function that reads the env var and throws only when called (at registration time), never at module import time. This keeps `bddgen` and Docker builds working without the secret.
 - **Cross-scenario state** (e.g. registered credentials) goes through `credentialStore` (file-based JSON at `.tmp/registered-user.json`). Do not use module-level variables for this — they don't survive across worker processes.
 - `.tmp` is git-ignored and excluded from Docker images. The CI workflow explicitly deletes it before each test run to prevent stale credentials on self-hosted runners.
 
